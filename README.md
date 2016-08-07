@@ -50,3 +50,40 @@ blacklist pinctrl_cherryview
 Reboot the system to confirm that it boots normally with no editing of the 
 boot commands.
 
+## Touchpad Configuration
+
+The touchpad works reasonably well, but the tap-to-click feature is very annoying and I find I 
+trigger it while typing normally. I edited `~/.config/openbox/autostart` to configure the touchpad
+like so:
+
+```
+## Detect and configure touchpad. See 'man synclient' for more info.
+if egrep -iq 'touchpad' /proc/bus/input/devices; then
+    synclient VertEdgeScroll=1 &
+    synclient HorizEdgeScroll=1 &
+    synclient TapButton1=0 &
+fi
+```
+
+Now only the mechanical click is enabled, which I prefer.
+
+## Getting Sound Working
+
+After much frustration I realized the way to get the sound working is to just remove pulseaudio.
+
+```
+sudo apt-get remove pulseaudio
+```
+
+Then reboot. Sound works "out of the box" for me after that.
+
+## Device Scaling Weirdness
+
+Chromium UI is way oversized for some reason. The solution for this is to start it with a flag:
+
+```
+chromium --force-device-scale-factor=1
+```
+
+I edited `~/.config/openbox/rc.xml` so that when I press super+w it opens Chromium in this way.
+
